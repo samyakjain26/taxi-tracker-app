@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'package:camera/camera.dart';
 import 'videorecording.dart';
+import 'package:location/location.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -140,9 +141,10 @@ class _loginState extends State<login> {
                           .instance
                           .signInWithEmailAndPassword(
                               email: _email.text, password: _password.text);
-
+                      late Location location = Location();
                       List<CameraDescription> cameras = [];
                       try {
+                        await location.getLocation();
                         // WidgetsFlutterBinding.ensureInitialized();
                       } on CameraException catch (e) {
                         cameras = await availableCameras();

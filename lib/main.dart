@@ -17,7 +17,7 @@ Future<void> main() async {
   late Location location = Location();
   WidgetsFlutterBinding.ensureInitialized();
   //Get list of available cameras
-  await location.getLocation();
+  // await location.getLocation();
   await Firebase.initializeApp();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

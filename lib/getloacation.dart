@@ -45,22 +45,25 @@ class _MyLocationState extends State<MyLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "Date/Time: $_dateTime",
-          style: TextStyle(
-            fontSize: 15,
-            color: Colors.black,
+    return Container(
+      height: 100,
+      child: Column(
+        children: [
+          Text(
+            "Date/Time: $_dateTime",
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.black,
+            ),
           ),
-        ),
-        Text(
-          "Latitude: ${_currentPosition?.latitude}, Longitude: ${_currentPosition?.longitude}",
-          style: TextStyle(
-              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        LocationPage(),
-      ],
+          Text(
+            "Latitude: ${_currentPosition?.latitude}, Longitude: ${_currentPosition?.longitude}",
+            style: TextStyle(
+                fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          LocationPage(),
+        ],
+      ),
     );
   }
 

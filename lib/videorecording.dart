@@ -203,6 +203,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
               controller != null && controller!.value.isRecordingVideo
                   ? null
                   : onNewCameraSelected(cameras[0]);
+              MyLocation();
             },
             icon: Icon(Icons.camera_alt)),
         IconButton(
