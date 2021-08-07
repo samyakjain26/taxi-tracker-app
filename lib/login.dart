@@ -15,6 +15,9 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+  bool correctpassword = true;
+  bool toomanyrequests = true;
+  bool correctemail = true;
   FirebaseAuth auth = FirebaseAuth.instance;
   TextEditingController _email = TextEditingController();
   Color _iconcolor = Colors.grey;
@@ -60,7 +63,9 @@ class _loginState extends State<login> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter Email';
                             } else {
-                              return null;
+                              if (correctemail == false) {
+                                return 'USER NOT FOUND';
+                              }
                             }
                           },
                           controller: _email,
@@ -83,7 +88,15 @@ class _loginState extends State<login> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Password';
                               } else {
-                                return null;
+                                if (correctpassword == false) {
+                                  return 'Password incorrect';
+                                }
+                                if (toomanyrequests == false) {
+                                  return 'Too many requests please try again later';
+                                }
+                                if (correctemail == false) {
+                                  return 'USER NOT FOUND';
+                                }
                               }
                             },
                             obscureText: seepass ? false : true,
@@ -130,27 +143,81 @@ class _loginState extends State<login> {
                   child: RaisedButton(
                     onPressed: () async {
                       setState(() {
-                        if (_emailtext.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Processing Data')),
-                          );
-                        }
+                        // if (_emailtext.currentState!.validate()) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(content: Text('Processing Data')),
+                        //   );
+                        // }
                       });
 
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                              email: _email.text, password: _password.text);
-                      late Location location = Location();
-                      List<CameraDescription> cameras = [];
                       try {
-                        await location.getLocation();
-                        // WidgetsFlutterBinding.ensureInitialized();
-                      } on CameraException catch (e) {
-                        cameras = await availableCameras();
-                        logError(e.code, e.description);
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .signInWithEmailAndPassword(
+                                email: _email.text, password: _password.text);
+                        late Location location = Location();
+
+                        List<CameraDescription> cameras = [];
+                        try {
+                          await location.getLocation();
+                        } on CameraException catch (e) {
+                          cameras = await availableCameras();
+                          logError(e.code, e.description);
+                        }
+                        camera();
+                      } on FirebaseAuthException catch (error) {
+                        print(error.code);
+                        switch (error.code) {
+                          case "invalid-email":
+                            correctemail = false;
+                            if (_emailtext.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('INVALID EMAIL')),
+                              );
+                            }
+                            // errorMessage = "Your email address appears to be malformed.";
+                            break;
+                          case "wrong-password":
+                            correctpassword = false;
+
+                            if (_emailtext.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('INCORRECT PASSWORD')),
+                              );
+                            }
+                            // errorMessage = "Your password is wrong.";
+                            break;
+                          case "user-not-found":
+                            correctemail = false;
+                            if (_emailtext.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('USER NOT FOUND')),
+                              );
+                            }
+                            // errorMessage = "User with this email doesn't exist.";
+                            break;
+                          case "ERROR_USER_DISABLED":
+                            // errorMessage = "User with this email has been disabled.";
+                            break;
+                          case "too-many-requests":
+                            toomanyrequests = false;
+                            if (_emailtext.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('TOO MANY REQUESTS')),
+                              );
+                            }
+                            // errorMessage = "Too many requests. Try again later.";
+                            break;
+                          case "ERROR_OPERATION_NOT_ALLOWED":
+                            // errorMessage = "Signing in with Email and Password is not enabled.";
+                            break;
+                          default:
+                          // errorMessage = "An undefined Error happened.";
+                        }
                       }
-                      camera();
+
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) => main()));
                       // CameraApp(cameras: cameras)));

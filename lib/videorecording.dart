@@ -92,6 +92,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        bottomNavigationBar: _captureControlRowWidget(),
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Center(
@@ -104,13 +105,11 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
         key: _scaffoldKey,
         body: Column(
           children: [
-            Expanded(
-              child: Container(
+            Stack(children: [
+              Container(
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
-                  child: Center(
-                    child: _cameraPreviewWidget(),
-                  ),
+                  child: _cameraPreviewWidget(),
                 ),
                 decoration: BoxDecoration(
                   color: Colors.black,
@@ -123,19 +122,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
                   ),
                 ),
               ),
-            ),
-            MyLocation(),
-            _captureControlRowWidget(),
-            // _modeControlRowWidget(),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  // _thumbnailWidget(),
-                ],
-              ),
-            ),
+              Align(alignment: Alignment.bottomCenter, child: MyLocation()),
+            ] // _modeControlRowWidget(),
+                ),
           ],
         ),
       ),
@@ -145,13 +134,19 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
   /// Display the preview from the camera (or a message if the preview is not available).
   Widget _cameraPreviewWidget() {
     final CameraController? cameraController = controller;
+
     if (cameraController == null || !cameraController.value.isInitialized) {
-      return const Text(
-        'Tap a camera',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24.0,
-          fontWeight: FontWeight.w900,
+      return Container(
+        height: 400,
+        child: Center(
+          child: const Text(
+            'Tap a camera',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
         ),
       );
     } else {
