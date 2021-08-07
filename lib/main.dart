@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taxi_tracker/getloacation.dart';
 import 'login.dart';
 import 'package:camera/camera.dart';
-import 'camerapath.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';

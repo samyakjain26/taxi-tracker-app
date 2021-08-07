@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'package:camera/camera.dart';
-import 'camerapath.dart';
 import 'videorecording.dart';
 
 class login extends StatefulWidget {
@@ -149,7 +148,7 @@ class _loginState extends State<login> {
                         cameras = await availableCameras();
                         logError(e.code, e.description);
                       }
-                      main();
+                      camera();
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) => main()));
                       // CameraApp(cameras: cameras)));
