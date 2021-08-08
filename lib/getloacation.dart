@@ -142,8 +142,8 @@ class _LocationPageState extends State<LocationPage> {
 
   Future _calculateDistance() async {
     _positionStream = Geolocator.getPositionStream(
-      distanceFilter: 10,
-      intervalDuration: Duration(seconds: 5),
+      distanceFilter: 5,
+      // intervalDuration: Duration(seconds: 5),
     ).listen((Position position) async {
       Geolocator.getCurrentPosition().then((Position position) {
         setState(() {
