@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'getloacation.dart';
 import 'package:video_player/video_player.dart';
+import 'package:screen_recorder/screen_recorder.dart';
 
 class CameraExampleHome extends StatefulWidget {
   @override

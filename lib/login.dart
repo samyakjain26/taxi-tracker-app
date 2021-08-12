@@ -143,11 +143,7 @@ class _loginState extends State<login> {
                   child: RaisedButton(
                     onPressed: () async {
                       setState(() {
-                        // if (_emailtext.currentState!.validate()) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(content: Text('Processing Data')),
-                        //   );
-                        // }
+                      
                       });
 
                       try {
